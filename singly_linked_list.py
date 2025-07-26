@@ -9,12 +9,12 @@ class LinkedList:
     def __init__(self):
         self.head = None
     
-    def add_first(self, value):
+    def prepend(self, value):
         node = Node(value)
         node.next = self.head
         self.head = node
     
-    def add_last(self, value):
+    def append(self, value):
         node = Node(value)
         curr = self.head
         if curr != None: 
@@ -24,10 +24,10 @@ class LinkedList:
         else:
             self.head = node
 
-    def is_empty(self):
+    def isEmpty(self):
         return self.head == None
     
-    def find_index(self, value):
+    def indexOf(self, value):
         curr = self.head
         index = 0
         while curr is not None:
@@ -37,7 +37,7 @@ class LinkedList:
             index += 1
         return -1
     
-    def insert_at(self, index, value):
+    def insertAt(self, index, value):
         newNode= Node(value)
         curr = self.head
         prev = self.head
@@ -66,7 +66,7 @@ class LinkedList:
             curr = curr.next
         return length
     
-    def print_linked_list(self):
+    def show(self):
         curr = self.head
         if curr is None:
             return
@@ -75,7 +75,7 @@ class LinkedList:
             curr = curr.next
         print(str(curr.value), end='')
 
-    def delete_at(self, index):
+    def deleteAt(self, index):
         curr = self.head
         prev = None
         idx = 0
@@ -100,7 +100,7 @@ class LinkedList:
             idx += 1
         return False
 
-    def delete_node(self, value):
+    def deleteNode(self, value):
         curr = self.head
         prev = self.head
         while curr is not None:
@@ -115,7 +115,7 @@ class LinkedList:
             curr = curr.next
         return False
 
-    def get_sum(self):
+    def getSum(self):
         curr = self.head
         sum = 0
         while curr is not None:
