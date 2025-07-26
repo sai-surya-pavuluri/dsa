@@ -114,3 +114,21 @@ class LinkedList:
             prev = curr
             curr = curr.next
         return False
+
+    def get_sum(self):
+        curr = self.head
+        sum = 0
+        while curr is not None:
+            sum += curr.value
+            curr = curr.next
+        return sum
+
+    def reverse(self):
+        curr = self.head
+        prev = None
+        while curr is not None:
+            next_node = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next_node
+        self.head = prev
