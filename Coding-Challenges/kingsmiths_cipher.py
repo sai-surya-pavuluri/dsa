@@ -28,18 +28,28 @@ All characters in the input will be unique
 class ForgeKeys:
     def __init__(self):
         self.num = 0
-        
-    def forge_keys(self, s):
-        self.auxiliary(s, "")
-        print(f"Possible number of keys : {self.num}")
-        
-    def auxiliary(self, s, key):
-        if len(s) == 0:
+        self.keys = []
+
+    def forge_keys(self, rune):
+        self.num = 0
+        self.keys = []
+        self.construct_key(rune, "")
+        return self.keys
+
+    def construct_key(self, remaining_runes, current_key):
+        if len(remaining_runes) == 0:
             self.num += 1
-            print(key)
-            return self.num
-        for i in range(len(s)):
-            self.auxiliary(s[:i] + s[i+1:], key + s[i])
-            
-fK = ForgeKeys()
-fK.forge_keys("ABCD")
+            self.keys.append(current_key)
+            return
+        for i in range(len(remaining_runes)):
+            self.construct_key(
+                remaining_runes[:i] + remaining_runes[i+1:], 
+                current_key + remaining_runes[i]
+            )
+
+if __name__ == "__main__":
+    fK = ForgeKeys()
+    result = fK.forge_keys("ABCD")
+    print(f"Total keys Arin forged: {fK.num}")
+    for key in result:
+        print(key)
