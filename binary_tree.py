@@ -72,11 +72,61 @@ class Tree:
         if not node:
             return 0
         return 1 + self.node_count(node.left) + self.node_count(node.right)
+    
+    def node_sum(self, node):
+        if not node:
+            return 0
+        return self.node_sum(node.left) + self.node_sum(node.right) + node.value
+    
+    def tree_height(self, node):
+        if not node:
+            return 0
+        return max(self.tree_height(node.left), self.tree_height(node.right)) + 1
+    
+    def is_present(self, node, checkVal):
+        if not node:
+            return False
+        if node.value == checkVal:
+            return True
+        return self.is_present(node.left, checkVal) or self.is_present(node.right, checkVal)
+    
+    def max_node(self, node):
+        if not node:
+            return float('-inf')
+        highest = node.value
+        left = self.max_node(node.left)
+        right = self.max_node(node.right)
+        return max(left, right, highest)
+
+    def min_node(self, node):
+        if not node:
+            return float('inf')
+        least = node.value
+        left = self.min_node(node.left)
+        right = self.min_node(node.right)
+        return min(left, right, least)
+    
+    def leaf_node_count(self, node):
+        if not node:
+            return 0
+        if not node.left and not node.right:
+            return 1
+        return self.leaf_node_count(node.left) + self.leaf_node_count(node.right)
+    
+    @staticmethod
+    def equal(tree_1_node, tree_2_node):
+        if tree_1_node == None and tree_2_node == None:
+            return True
+        if tree_1_node == None or tree_2_node == None:
+            return False
+
+        return Tree.equal(tree_1_node.left, tree_2_node.left) and Tree.equal(tree_1_node.right, tree_2_node.right) and tree_1_node.value == tree_2_node.value
+
 
 
 if __name__ == "__main__":
     t = Tree()
-    t.build_tree([1,2,3,4,5,6,7])
+    t.build_tree([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
     t.show_tree("post_order")
     t.show_tree("level_order")
-    print("Nodes:", t.node_count(t.root))
+    print("Nodes:", t.leaf_node_count(t.root))
