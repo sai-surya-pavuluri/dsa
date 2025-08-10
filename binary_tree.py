@@ -1,23 +1,26 @@
 from collections import deque
+from typing import Optional, List, Any
+
 
 class TreeNode:
-    def __init__(self, value):
-        self.value = value
-        self.left = None
-        self.right = None
+    def __init__(self, value: Any):
+        self.value: Any = value
+        self.left: Optional["TreeNode"] = None
+        self.right: Optional["TreeNode"] = None
 
 
 class Tree:
     def __init__(self):
-        self.root = None
+        self.root: Optional[TreeNode] = None
 
-    def build_tree(self, values):
+    # ----- Build (heap-style level-order; use None for gaps) -----
+    def build_tree(self, values: List[Optional[Any]]) -> None:
         if not values:
             self.root = None
             return
         n = len(values)
 
-        def form(i):
+        def form(i: int) -> Optional[TreeNode]:
             if i >= n or values[i] is None:
                 return None
             node = TreeNode(values[i])
@@ -27,7 +30,8 @@ class Tree:
 
         self.root = form(0)
 
-    def show_tree(self, order="in_order"):
+    # ----- Display helpers -----
+    def show_tree(self, order: str = "in_order") -> None:
         if order == "in_order":
             print(*self.in_order(self.root), sep=" ")
         elif order == "pre_order":
@@ -39,26 +43,27 @@ class Tree:
         else:
             raise ValueError("order must be one of: in_order, pre_order, post_order, level_order")
 
-    def in_order(self, node):
+    # ----- Traversals (return lists for reuse/testing) -----
+    def in_order(self, node: Optional[TreeNode]) -> List[Any]:
         if not node:
             return []
         return self.in_order(node.left) + [node.value] + self.in_order(node.right)
 
-    def pre_order(self, node):
+    def pre_order(self, node: Optional[TreeNode]) -> List[Any]:
         if not node:
             return []
         return [node.value] + self.pre_order(node.left) + self.pre_order(node.right)
 
-    def post_order(self, node):
+    def post_order(self, node: Optional[TreeNode]) -> List[Any]:
         if not node:
             return []
         return self.post_order(node.left) + self.post_order(node.right) + [node.value]
-    
-    def level_order(self):
+
+    def level_order(self) -> List[Any]:
         if not self.root:
             return []
         q = deque([self.root])
-        out = []
+        out: List[Any] = []
         while q:
             node = q.popleft()
             out.append(node.value)
@@ -67,61 +72,74 @@ class Tree:
             if node.right:
                 q.append(node.right)
         return out
-    
-    def node_count(self, node):
+
+    # ----- Aggregates / queries -----
+    def node_count(self, node: Optional[TreeNode]) -> int:
         if not node:
             return 0
         return 1 + self.node_count(node.left) + self.node_count(node.right)
-    
-    def node_sum(self, node):
+
+    def node_sum(self, node: Optional[TreeNode]) -> Any:
         if not node:
             return 0
         return self.node_sum(node.left) + self.node_sum(node.right) + node.value
-    
-    def tree_height(self, node):
+
+    def tree_height(self, node: Optional[TreeNode]) -> int:
         if not node:
-            return 0
-        return max(self.tree_height(node.left), self.tree_height(node.right)) + 1
-    
-    def is_present(self, node, checkVal):
+            return 0  # height of empty tree as 0; stay consistent with this convention
+        return 1 + max(self.tree_height(node.left), self.tree_height(node.right))
+
+    def is_present(self, node: Optional[TreeNode], check_val: Any) -> bool:
         if not node:
             return False
-        if node.value == checkVal:
+        if node.value == check_val:
             return True
-        return self.is_present(node.left, checkVal) or self.is_present(node.right, checkVal)
-    
-    def max_node(self, node):
+        return self.is_present(node.left, check_val) or self.is_present(node.right, check_val)
+
+    def max_node(self, node: Optional[TreeNode]) -> Any:
         if not node:
-            return float('-inf')
-        highest = node.value
+            return float("-inf")
         left = self.max_node(node.left)
         right = self.max_node(node.right)
-        return max(left, right, highest)
+        return max(left, right, node.value)
 
-    def min_node(self, node):
+    def min_node(self, node: Optional[TreeNode]) -> Any:
         if not node:
-            return float('inf')
-        least = node.value
+            return float("inf")
         left = self.min_node(node.left)
         right = self.min_node(node.right)
-        return min(left, right, least)
-    
-    def leaf_node_count(self, node):
+        return min(left, right, node.value)
+
+    def leaf_node_count(self, node: Optional[TreeNode]) -> int:
         if not node:
             return 0
         if not node.left and not node.right:
             return 1
         return self.leaf_node_count(node.left) + self.leaf_node_count(node.right)
-    
+
+    # ----- Equality & Copy -----
     @staticmethod
-    def equal(tree_1_node, tree_2_node):
-        if tree_1_node == None and tree_2_node == None:
+    def equal(a: Optional[TreeNode], b: Optional[TreeNode]) -> bool:
+        if a is None and b is None:
             return True
-        if tree_1_node == None or tree_2_node == None:
+        if a is None or b is None:
             return False
+        if a.value != b.value:
+            return False
+        return Tree.equal(a.left, b.left) and Tree.equal(a.right, b.right)
 
-        return Tree.equal(tree_1_node.left, tree_2_node.left) and Tree.equal(tree_1_node.right, tree_2_node.right) and tree_1_node.value == tree_2_node.value
+    def copy(self, node: Optional[TreeNode]) -> Optional[TreeNode]:
+        if node is None:
+            return None
+        new_node = TreeNode(node.value)
+        new_node.left = self.copy(node.left)
+        new_node.right = self.copy(node.right)
+        return new_node
 
+    def copy_tree(self) -> "Tree":
+        t2 = Tree()
+        t2.root = self.copy(self.root)
+        return t2
 
 
 if __name__ == "__main__":
@@ -129,4 +147,6 @@ if __name__ == "__main__":
     t.build_tree([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
     t.show_tree("post_order")
     t.show_tree("level_order")
-    print("Nodes:", t.leaf_node_count(t.root))
+    print("Leaf nodes:", t.leaf_node_count(t.root))
+    t2 = t.copy_tree()
+    print("Equal copies:", Tree.equal(t.root, t2.root))
