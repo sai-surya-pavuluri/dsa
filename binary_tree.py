@@ -13,7 +13,7 @@ class Tree:
     def __init__(self):
         self.root: Optional[TreeNode] = None
 
-    # ----- Build (heap-style level-order; use None for gaps) -----
+    # ----- Build -----
     def build_tree(self, values: List[Optional[Any]]) -> None:
         if not values:
             self.root = None
@@ -30,7 +30,7 @@ class Tree:
 
         self.root = form(0)
 
-    # ----- Display helpers -----
+    # ----- Display Tree -----
     def show_tree(self, order: str = "in_order") -> None:
         if order == "in_order":
             print(*self.in_order(self.root), sep=" ")
@@ -43,7 +43,7 @@ class Tree:
         else:
             raise ValueError("order must be one of: in_order, pre_order, post_order, level_order")
 
-    # ----- Traversals (return lists for reuse/testing) -----
+    # ----- Traversals -----
     def in_order(self, node: Optional[TreeNode]) -> List[Any]:
         if not node:
             return []
@@ -73,7 +73,7 @@ class Tree:
                 q.append(node.right)
         return out
 
-    # ----- Aggregates / queries -----
+    # ----- Aggregates -----
     def node_count(self, node: Optional[TreeNode]) -> int:
         if not node:
             return 0
@@ -86,7 +86,7 @@ class Tree:
 
     def tree_height(self, node: Optional[TreeNode]) -> int:
         if not node:
-            return 0  # height of empty tree as 0; stay consistent with this convention
+            return 0
         return 1 + max(self.tree_height(node.left), self.tree_height(node.right))
 
     def is_present(self, node: Optional[TreeNode], check_val: Any) -> bool:
