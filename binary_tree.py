@@ -141,12 +141,30 @@ class Tree:
         t2.root = self.copy(self.root)
         return t2
 
+    # ----- Tree Paths -----
+    def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+        paths = []
+        def backtrack(node, path):
+            if node is None:
+                return
+            path.append(node.value)
+            backtrack(node.left, path)
+            backtrack(node.right, path)
+            if node.left is None and node.right is None:
+                paths.append('->'.join(map(str, path[:])))
+            path.pop()
+            return
+            
+        backtrack(root, [])
+        return paths
+
 
 if __name__ == "__main__":
     t = Tree()
-    t.build_tree([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
+    t.build_tree([1,2,3,4,5,6,7])
     t.show_tree("post_order")
     t.show_tree("level_order")
     print("Leaf nodes:", t.leaf_node_count(t.root))
     t2 = t.copy_tree()
     print("Equal copies:", Tree.equal(t.root, t2.root))
+    print(t.binaryTreePaths(t.root))
