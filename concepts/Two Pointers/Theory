@@ -1,0 +1,78 @@
+==========================
+Two Pointers Algorithm
+==========================
+
+📌 What is it?
+--------------
+The two pointers technique is a pattern where we use
+two indices (pointers) that move through a data
+structure in different ways to reduce time complexity
+compared to brute force.
+
+Typical setup:
+- One pointer starts from the beginning (left).
+- Another pointer starts from the end (right).
+- Move them towards each other based on some condition.
+
+Why it works:
+- When the data is sorted or has some structure,
+  we can decide which pointer to move without
+  exploring every pair/combination.
+
+--------------------------
+Common Use Cases
+--------------------------
+1. Pair problems (sum, difference, product)
+   - Example: Two Sum II (sorted input)
+   - Find if two numbers add to a target.
+
+2. Subarray / substring problems
+   - Example: Longest substring without repeating characters
+   - Often combined with sliding window technique.
+
+3. Sorting & merging
+   - Example: Merge two sorted arrays
+   - Compare elements at two pointers and advance one.
+
+4. Palindrome check
+   - Compare characters from both ends moving inward.
+
+--------------------------
+Example: Two Sum (sorted)
+--------------------------
+Given nums = [2, 7, 11, 15], target = 9
+
+left = 0, right = 3
+nums[left] + nums[right] = 2 + 15 = 17 > 9
+   -> too large, move right--
+
+left = 0, right = 2
+nums[left] + nums[right] = 2 + 11 = 13 > 9
+   -> too large, move right--
+
+left = 0, right = 1
+nums[left] + nums[right] = 2 + 7 = 9 ✅ found
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+--------------------------
+Key Advantages
+--------------------------
+- More efficient than brute force O(n^2).
+- Often reduces complexity to O(n).
+- Space efficient (only pointers, no extra data structures).
+
+--------------------------
+When to use
+--------------------------
+- Input is sorted, or can be sorted.
+- Problem involves pairs, subarrays, or two ends of a structure.
+- Can discard possibilities deterministically by moving a pointer.
+
+--------------------------
+Related Patterns
+--------------------------
+- Sliding Window (two pointers with variable window size)
+- Fast & Slow pointers (for cycles, linked lists)
+- Binary Search (specialized two-pointer "middle" approach)
